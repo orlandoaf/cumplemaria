@@ -1,6 +1,6 @@
 export class StateManager {
     constructor() {
-        this.STORAGE_KEY = 'MARIA_PAULA_LEGADO_MAGIA_SAVE';
+        this.STORAGE_KEY = 'MARIA_PAULA_LEGADO_MAGIA_AUDITED_SAVE';
         this.defaultState = {
             currentChapter: 1,
             playerPosition: { x: 100, y: 400 },
@@ -40,7 +40,7 @@ export class StateManager {
         try {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.state));
         } catch (error) {
-            console.error('Error al guardar datos de la partida:', error);
+            console.error('Error en auditoría técnica - Fallo al guardar en localStorage:', error);
         }
     }
 
@@ -49,7 +49,7 @@ export class StateManager {
             const savedData = localStorage.getItem(this.STORAGE_KEY);
             return savedData ? JSON.parse(savedData) : { ...this.defaultState };
         } catch (error) {
-            console.error('Error al recuperar datos guardados:', error);
+            console.error('Error en auditoría técnica - Fallo al cargar localStorage:', error);
             return { ...this.defaultState };
         }
     }

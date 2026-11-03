@@ -8,31 +8,31 @@ export class DialogueManager {
     }
 
     createUI() {
-        this.container = this.scene.add.container(0, 420).setScrollFactor(0).setDepth(1000).setVisible(false);
+        this.container = this.scene.add.container(0, 410).setScrollFactor(0).setDepth(1000).setVisible(false);
 
         const bg = this.scene.add.graphics();
-        bg.fillStyle(0x1a121c, 0.95);
-        bg.fillRoundedRect(40, 0, 720, 150, 10);
-        bg.lineStyle(3, 0xc99a2e, 1);
-        bg.strokeRoundedRect(40, 0, 720, 150, 10);
+        bg.fillStyle(0x0f0b14, 0.96);
+        bg.fillRoundedRect(30, 0, 740, 160, 12);
+        bg.lineStyle(3, 0xd4af37, 1);
+        bg.strokeRoundedRect(30, 0, 740, 160, 12);
         this.container.add(bg);
 
-        this.speakerText = this.scene.add.text(60, 15, '', {
+        this.speakerText = this.scene.add.text(50, 15, '', {
             font: 'bold 20px Georgia',
             fill: '#ffd700'
         });
         this.container.add(this.speakerText);
 
-        this.bodyText = this.scene.add.text(60, 50, '', {
+        this.bodyText = this.scene.add.text(50, 50, '', {
             font: '16px Georgia',
             fill: '#f4e8c1',
-            wordWrap: { width: 680 }
+            wordWrap: { width: 700 }
         });
         this.container.add(this.bodyText);
 
-        const promptText = this.scene.add.text(730, 120, '[ESPACIO]', {
+        const promptText = this.scene.add.text(750, 130, '[ESPACIO]', {
             font: '12px Georgia',
-            fill: '#888888'
+            fill: '#aaaaaa'
         }).setOrigin(1, 0);
         this.container.add(promptText);
     }

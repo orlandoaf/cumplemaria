@@ -4,60 +4,66 @@ export class MapBuilder {
         const obstacleGroup = scene.physics.add.staticGroup();
 
         if (theme === 'station') {
-            graphics.fillStyle(0x1d1a29, 1);
+            // Suelo de adoquines de granito con sombras profundas
+            graphics.fillStyle(0x191724, 1);
             graphics.fillRect(0, 0, width, height);
 
-            graphics.fillStyle(0x282438, 1);
+            graphics.fillStyle(0x232033, 1);
             for (let x = 0; x < width; x += 32) {
                 for (let y = 80; y < height - 60; y += 32) {
                     if ((x + y) % 64 === 0) {
-                        graphics.fillRect(x, y, 30, 30);
+                        graphics.fillRect(x + 2, y + 2, 28, 28);
                     }
                 }
             }
-            graphics.fillStyle(0x110f1a, 1);
+            // Bordes y vía del tren con metal bruñido y madera
+            graphics.fillStyle(0x0e0c14, 1);
             graphics.fillRect(0, 0, width, 80);
-            graphics.fillStyle(0x715a3e, 1);
+            graphics.fillStyle(0x5c4228, 1);
             graphics.fillRect(0, 76, width, 8);
-            graphics.fillStyle(0x0a0910, 1);
+            graphics.fillStyle(0x08070d, 1);
             graphics.fillRect(0, height - 60, width, 60);
 
         } else if (theme === 'forest') {
-            graphics.fillStyle(0x142b1a, 1);
+            // Hierba nocturna rica en degradados
+            graphics.fillStyle(0x0f2414, 1);
             graphics.fillRect(0, 0, width, height);
 
-            graphics.fillStyle(0x1e3e26, 1);
-            for (let x = 0; x < width; x += 40) {
-                for (let y = 0; y < height; y += 40) {
-                    if ((x * y) % 3 === 0) graphics.fillRect(x, y, 16, 16);
+            graphics.fillStyle(0x183820, 1);
+            for (let x = 0; x < width; x += 32) {
+                for (let y = 0; y < height; y += 32) {
+                    if ((x * y) % 5 === 0) graphics.fillRect(x, y, 14, 14);
                 }
             }
 
-            graphics.fillStyle(0x2e1f14, 1);
+            // Sendero empedrado de tierra húmeda y grava
+            graphics.fillStyle(0x2b1c12, 1);
             graphics.fillRect(0, height / 2 - 45, width, 90);
-            graphics.fillStyle(0x3d2b1d, 1);
+            graphics.fillStyle(0x382619, 1);
             graphics.fillRect(0, height / 2 - 35, width, 70);
 
         } else if (theme === 'castle') {
-            graphics.fillStyle(0x242230, 1);
+            // Paredes y baldosas góticas del castillo de Hogwarts
+            graphics.fillStyle(0x1d1b26, 1);
             graphics.fillRect(0, 0, width, height);
 
-            graphics.fillStyle(0x2f2c3d, 1);
+            graphics.fillStyle(0x272433, 1);
             for (let x = 0; x < width; x += 64) {
                 for (let y = 0; y < height; y += 64) {
                     graphics.fillRect(x + 4, y + 4, 56, 56);
                 }
             }
 
-            graphics.fillStyle(0x15141e, 1);
-            for (let x = 100; x < width; x += 300) {
-                graphics.fillRect(x, 0, 40, height);
+            graphics.fillStyle(0x111017, 1);
+            for (let x = 120; x < width; x += 280) {
+                graphics.fillRect(x, 0, 45, height);
             }
 
         } else if (theme === 'library') {
-            graphics.fillStyle(0x2b180d, 1);
+            // Parquet de caoba pulida con patrón de espiga
+            graphics.fillStyle(0x24130a, 1);
             graphics.fillRect(0, 0, width, height);
-            graphics.fillStyle(0x382012, 1);
+            graphics.fillStyle(0x301b0f, 1);
             for (let x = 0; x < width; x += 32) {
                 for (let y = 0; y < height; y += 16) {
                     if ((x + y) % 32 === 0) graphics.fillRect(x, y, 28, 12);
@@ -65,9 +71,10 @@ export class MapBuilder {
             }
 
         } else if (theme === 'potions') {
-            graphics.fillStyle(0x0f1712, 1);
+            // Mazmorra de piedra oscura con musgo verde bioluminiscente
+            graphics.fillStyle(0x0b120e, 1);
             graphics.fillRect(0, 0, width, height);
-            graphics.fillStyle(0x16241c, 1);
+            graphics.fillStyle(0x121e17, 1);
             for (let x = 0; x < width; x += 48) {
                 for (let y = 0; y < height; y += 48) {
                     graphics.fillRect(x + 2, y + 2, 44, 44);
@@ -75,26 +82,27 @@ export class MapBuilder {
             }
 
         } else if (theme === 'great_hall') {
-            graphics.fillStyle(0x1c1512, 1);
+            // Gran Comedor con alfombra ceremonial bordada de Gryffindor
+            graphics.fillStyle(0x17110e, 1);
             graphics.fillRect(0, 0, width, height);
-            graphics.fillStyle(0x5e0a14, 1);
+            graphics.fillStyle(0x520811, 1);
             graphics.fillRect(120, 0, width - 240, height);
-            graphics.fillStyle(0xc99a2e, 1);
+            graphics.fillStyle(0xbd8f28, 1);
             graphics.fillRect(116, 0, 4, height);
             graphics.fillRect(width - 120, 0, 4, height);
 
         } else if (theme === 'gryffindor') {
-            graphics.fillStyle(0x3b0d13, 1);
+            // Sala Común acogedora con alfombra granate y bordes dorados
+            graphics.fillStyle(0x2e0a0e, 1);
             graphics.fillRect(0, 0, width, height);
-            graphics.fillStyle(0x6e121c, 1);
+            graphics.fillStyle(0x5e0f17, 1);
             graphics.fillRect(60, 60, width - 120, height - 120);
-            graphics.fillStyle(0xd4a331, 1);
+            graphics.fillStyle(0xc29329, 1);
             graphics.fillRect(56, 56, width - 112, 4);
             graphics.fillRect(56, height - 60, width - 112, 4);
         }
 
         scene.physics.world.setBounds(0, 0, width, height);
-
         return obstacleGroup;
     }
 }
