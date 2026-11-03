@@ -1,0 +1,1 @@
+export class BirthdayCardModal { constructor(scene) { this.scene = scene; } show() {} hide() {} }

@@ -1,0 +1,1 @@
+export const QUESTS_DATABASE = { QUEST_CH1: { id: 'QUEST_CH1', chapter: 1, title: 'La Llegada al Andén', description: 'Explora la estación y encuentra al guía.', reward: 'Carta' } };

@@ -1,0 +1,1 @@
+export const DIALOGUES_DATABASE = { CARTA_BIENVENIDA: [{ speaker: 'Carta de Hogwarts', text: '¡Bienvenida María Paula!' }], HAT_FULL_SPEECH: [{ speaker: 'Sombrero Seleccionador', text: '¡GRYFFINDOR!' }] };

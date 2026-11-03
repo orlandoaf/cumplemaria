@@ -1,0 +1,1 @@
+export const ITEMS_DATABASE = { ACCEPTANCE_LETTER: { id: 'ACCEPTANCE_LETTER', name: 'Carta de Hogwarts', description: 'La carta oficial de aceptación enviada a María Paula.', icon: 'letter_icon' } };

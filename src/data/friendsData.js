@@ -1,0 +1,1 @@
+export const FRIENDS_DATABASE = [{ id: 'orlando', name: 'Orlando', x: 350, y: 400, spriteKey: 'npc_orlando', dialogue: [{ speaker: 'Orlando', text: '¡Feliz Cumpleaños!' }] }];
