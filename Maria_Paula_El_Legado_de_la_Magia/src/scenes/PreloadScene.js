@@ -1,0 +1,54 @@
+export class PreloadScene extends Phaser.Scene {
+    constructor() {
+        super({ key: 'PreloadScene' });
+    }
+
+    preload() {
+        const loadingText = this.add.text(400, 300, 'Generando Arte Pixel Art... 0%', {
+            font: '20px Georgia',
+            fill: '#ffd700'
+        }).setOrigin(0.5);
+
+        this.load.on('progress', (value) => {
+            loadingText.setText(`Generando Arte Pixel Art... ${Math.floor(value * 100)}%`);
+        });
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 128;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d');
+
+        for (let row = 0; row < 4; row++) {
+            for (let col = 0; col < 4; col++) {
+                const x = col * 32;
+                const y = row * 32;
+
+                ctx.fillStyle = '#1a1824';
+                ctx.fillRect(x + 10, y + 12, 12, 16);
+
+                ctx.fillStyle = '#ffdbac';
+                ctx.fillRect(x + 11, y + 4, 10, 9);
+
+                ctx.fillStyle = '#3d2314';
+                ctx.fillRect(x + 10, y + 2, 12, 5);
+                ctx.fillRect(x + 8, y + 5, 3, 10);
+                ctx.fillRect(x + 21, y + 5, 3, 10);
+
+                ctx.fillStyle = '#800020';
+                ctx.fillRect(x + 11, y + 12, 10, 3);
+                ctx.fillStyle = '#ffd700';
+                ctx.fillRect(x + 13, y + 12, 3, 3);
+
+                ctx.fillStyle = '#0a090d';
+                ctx.fillRect(x + 10, y + 27, 4, 4);
+                ctx.fillRect(x + 18, y + 27, 4, 4);
+            }
+        }
+
+        this.textures.addSpriteSheet('maria_paula', canvas, { frameWidth: 32, frameHeight: 32 });
+    }
+
+    create() {
+        this.scene.start('MainMenuScene');
+    }
+}

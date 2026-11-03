@@ -1,0 +1,96 @@
+import { stateManager } from '../core/StateManager.js';
+import { InventoryManager } from '../systems/InventoryManager.js';
+import { QuestManager } from '../systems/QuestManager.js';
+
+export class UIScene extends Phaser.Scene {
+    constructor() {
+        super({ key: 'UIScene', active: true });
+    }
+
+    create() {
+        this.inventoryManager = new InventoryManager();
+        this.questManager = new QuestManager();
+
+        this.add.text(780, 20, '[I] Inventario   [J] Misiones', {
+            font: '14px Georgia',
+            fill: '#ffd700'
+        }).setOrigin(1, 0).setScrollFactor(0);
+
+        this.input.keyboard.on('keydown-I', () => this.toggleInventory());
+        this.input.keyboard.on('keydown-J', () => this.toggleQuests());
+
+        this.createPanels();
+    }
+
+    createPanels() {
+        this.inventoryPanel = this.add.container(400, 300).setScrollFactor(0).setVisible(false);
+        const invBg = this.add.graphics();
+        invBg.fillStyle(0x110e17, 0.95);
+        invBg.fillRoundedRect(-200, -150, 400, 300, 10);
+        invBg.lineStyle(2, 0xc99a2e, 1);
+        invBg.strokeRoundedRect(-200, -150, 400, 300, 10);
+        this.inventoryPanel.add(invBg);
+
+        this.invText = this.add.text(0, -120, 'INVENTARIO MÁGICO', {
+            font: 'bold 20px Georgia',
+            fill: '#ffd700'
+        }).setOrigin(0.5);
+        this.inventoryPanel.add(this.invText);
+
+        this.invListText = this.add.text(-170, -70, '', {
+            font: '14px Georgia',
+            fill: '#f4e8c1',
+            wordWrap: { width: 340 }
+        });
+        this.inventoryPanel.add(this.invListText);
+
+        this.questPanel = this.add.container(400, 300).setScrollFactor(0).setVisible(false);
+        const qBg = this.add.graphics();
+        qBg.fillStyle(0x110e17, 0.95);
+        qBg.fillRoundedRect(-200, -150, 400, 300, 10);
+        qBg.lineStyle(2, 0xc99a2e, 1);
+        qBg.strokeRoundedRect(-200, -150, 400, 300, 10);
+        this.questPanel.add(qBg);
+
+        this.qTitle = this.add.text(0, -120, 'REGISTRO DE MISIONES', {
+            font: 'bold 20px Georgia',
+            fill: '#ffd700'
+        }).setOrigin(0.5);
+        this.questPanel.add(this.qTitle);
+
+        this.qListText = this.add.text(-170, -70, '', {
+            font: '14px Georgia',
+            fill: '#f4e8c1',
+            wordWrap: { width: 340 }
+        });
+        this.questPanel.add(this.qListText);
+    }
+
+    toggleInventory() {
+        const visible = !this.inventoryPanel.visible;
+        this.questPanel.setVisible(false);
+        this.inventoryPanel.setVisible(visible);
+
+        if (visible) {
+            const items = this.inventoryManager.getInventoryDetails();
+            const textContent = items.length > 0 
+                ? items.map(i => `• ${i.name}\n  ${i.description}`).join('\n\n')
+                : 'Tu mochila mágica está vacía en este momento.';
+            this.invListText.setText(textContent);
+        }
+    }
+
+    toggleQuests() {
+        const visible = !this.questPanel.visible;
+        this.inventoryPanel.setVisible(false);
+        this.questPanel.setVisible(visible);
+
+        if (visible) {
+            const quests = this.questManager.getActiveQuests();
+            const textContent = quests.length > 0 
+                ? quests.map(q => `[EN PROGRESO] ${q.title}\n${q.description}`).join('\n\n')
+                : 'No tienes misiones activas actualmente.';
+            this.qListText.setText(textContent);
+        }
+    }
+}
