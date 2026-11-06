@@ -2,7 +2,7 @@ export class InputManager { // Unifica teclado y controles táctiles
   constructor(scene) { // Recibe la escena dueña
     this.scene = scene; // Guarda la escena
     const kb = scene.input.keyboard; // Plugin de teclado
-    this.keys = kb.addKeys('W,A,S,D,E,SPACE,SHIFT'); // Teclas del prompt usadas en esta fase
+    this.keys = kb.addKeys('W,A,S,D,E,SPACE,SHIFT,M,I,J,ESC,ONE,TWO,THREE,FOUR,FIVE,SIX'); // Teclas del prompt usadas en esta fase
     this.cursors = kb.createCursorKeys(); // Flechas
     this.stick = { x: 0, y: 0 }; this.touchRun = false; this.touchInteract = false; // Estado táctil
     if (scene.sys.game.device.input.touch) this.buildTouch(); // Solo en dispositivos táctiles
@@ -19,6 +19,7 @@ export class InputManager { // Unifica teclado y controles táctiles
       s.add.text(x, y, label, { fontSize: '14px', color: '#fff' }).setOrigin(0.5).setScrollFactor(0).setDepth(2001); // Etiqueta
     }; // Fin btn
     btn(430, 215, 'E', () => { this.touchInteract = true; }, () => {}); // Botón interactuar
+    this.touchPanel = null; [[320, 'I', 'inv'], [362, 'M', 'map'], [404, 'J', 'quests'], [446, '||', 'pause']].forEach(([x, l, n]) => btn(x, 22, l, () => { this.touchPanel = n; }, () => {})); // Accesos táctiles a inventario, mapa, misiones y pausa
     btn(385, 235, 'RUN', () => { this.touchRun = true; }, () => { this.touchRun = false; }); // Botón correr (mantener)
   } // Fin buildTouch
   moveStick(p, C, knob) { // Calcula el vector del joystick
@@ -36,4 +37,8 @@ export class InputManager { // Unifica teclado y controles táctiles
   get running() { return this.keys.SHIFT.isDown || this.touchRun; } // Correr con SHIFT o botón
   consumeInteract() { const v = Phaser.Input.Keyboard.JustDown(this.keys.E) || this.touchInteract; this.touchInteract = false; return v; } // E o botón, una sola vez
   consumeAdvance() { return Phaser.Input.Keyboard.JustDown(this.keys.SPACE) || this.consumeInteract(); } // ESPACIO (o E) avanza diálogo
+  consume(name) { return Phaser.Input.Keyboard.JustDown(this.keys[name]); } // Una pulsación de una tecla concreta
+  consumePanel() { const t = this.touchPanel; this.touchPanel = null; return t || (this.consume('I') ? 'inv' : this.consume('M') ? 'map' : this.consume('J') ? 'quests' : this.consume('ESC') ? 'pause' : null); } // Panel pedido por teclado o botón
+  consumeStep() { const k = this.keys, c = this.cursors, up = Phaser.Input.Keyboard.JustDown(k.W) || Phaser.Input.Keyboard.JustDown(c.up), dn = Phaser.Input.Keyboard.JustDown(k.S) || Phaser.Input.Keyboard.JustDown(c.down); return dn ? 1 : up ? -1 : 0; } // Navegación de menús
+  consumeNumber() { return ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX'].findIndex(n => Phaser.Input.Keyboard.JustDown(this.keys[n])); } // Teclas 1-6 (-1 si ninguna)
 } // Fin InputManager

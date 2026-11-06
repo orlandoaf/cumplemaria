@@ -6,7 +6,7 @@ const build = m => { // Genera muros perimetrales y portales a partir de las sal
   seg(m.w, g.s).forEach(([a, b]) => W.push({ x: a, y: m.h - 24, w: b - a, h: 24 })); // Borde sur
   seg(m.h, g.w).forEach(([a, b]) => W.push({ x: 0, y: a, w: 24, h: b - a })); // Borde oeste
   seg(m.h, g.e).forEach(([a, b]) => W.push({ x: m.w - 24, y: a, w: 24, h: b - a })); // Borde este
-  m.walls = W; m.portals = (m.exits || []).map(e => ({ ...edge(m, e), to: e.to, spawn: e.spawn })); return m; // Entrega el mapa completo
+  m.walls = W; m.portals = (m.exits || []).map(e => ({ ...edge(m, e), to: e.to, spawn: e.spawn, side: e.side })); return m; // Entrega el mapa completo
 }; // Fin build
 export const MAPS = { // Datos de los 7 capítulos (decor: [prop, x, y-base]; fx: partículas; ambient: [color, opacidad])
   Ch1_Station: build({ name: 'Estación del Expreso', w: 640, h: 360, ground: 'cobble', wall: 'brick', spawn: { x: 60, y: 180 }, ambient: ['#1b2a4a', 0.2], // Estación al atardecer
@@ -45,3 +45,44 @@ export const MAPS = { // Datos de los 7 capítulos (decor: [prop, x, y-base]; fx
     fx: [{ t: 'embers', x: 380, y: 60, w: 40 }, { t: 'motes', x: 60, y: 60, w: 680, h: 320, c: 0xffc07a }], // Brasas y motas cálidas
     interactables: [{ x: 390, y: 280, w: 20, h: 22, lines: ['Un pastel te espera en la mesa...', '(La sorpresa completa: Fases 6-7.)'] }] }) // Pastel
 }; // Fin MAPS
+
+const npc = (id, name, x, y, robe, scarf, hair, o = {}) => ({ kind: 'npc', id, name, x, y, w: 22, h: 26, look: { robe, scarf, hair }, ...o }); // Atajo para definir un NPC
+const orb = (id, item, x, y, tint, o = {}) => ({ kind: 'item', id, item, x, y, w: 18, h: 18, tint, ...o }); // Atajo para un objeto recogible
+const EXTRA = { // Contenido de la Fase 4 por capítulo: misión, interacciones y puertas con requisito
+  Ch1_Station: { quest: 'q1', gates: { e: { req: 'q:q1', hint: 'Aún debes encontrar al guía. Revisa tu equipaje y habla con él.' } }, interactables: [], things: [ // Capítulo 1
+    { kind: 'talk', id: 'luggage', script: 'luggage', x: 242, y: 164, w: 26, h: 22 }, // Equipaje con la carta
+    npc('guia', 'Guía', 585, 150, '#2f6a4f', '#e0b030', '#c8c8c8', { script: 'guide' }), // Guía del andén
+    npc('est1', 'Estudiante', 370, 215, '#3a5a8a', '#3a8a5a', '#2a2a2a', { lines: ['Estudiante: ¡Es mi primer año! Dicen que el castillo cambia de lugar las escaleras.', 'Estudiante: El guía está cerca de la salida este.'] }), // Estudiante 1
+    npc('est2', 'Estudiante', 560, 250, '#7a3a6a', '#d0a030', '#8a4a20', { script: 'student2' }), // Estudiante con bufanda perdida
+    orb('bufanda', 'objeto_perdido', 440, 318, 0xff8080, { lines: ['Una bufanda olvidada junto a un banco. Alguien la estará buscando.'] }), // Objeto perdido
+    { kind: 'talk', id: 'letrero', x: 330, y: 248, w: 22, h: 26, lines: ['Letrero: Expreso Mágico. Próximo destino: el castillo, al final del sendero del bosque.'] }] }, // Letrero
+  Ch2_Path: { quest: 'q2', gates: { e: { req: 'q:q2', hint: 'El camino sigue cerrado: recupera los tres objetos y resuelve el acertijo del guardabosques.' } }, things: [ // Capítulo 2
+    orb('amuleto', 'amuleto_bosque', 500, 345, 0xffd27a, { progress: 'q2', lines: ['Un amuleto reluce entre las rocas de la orilla del lago.'] }), // Objeto 1
+    orb('pluma', 'pluma_plata', 56, 118, 0xd0e0ff, { progress: 'q2', lines: ['Rincón escondido entre los arbustos: una pluma de plata brilla en el suelo.'] }), // Objeto 2 (zona oculta)
+    orb('orbe', 'orbe_musgo', 300, 335, 0x7dff7d, { progress: 'q2', lines: ['Un orbe cubierto de musgo late suavemente bajo un árbol.'] }), // Objeto 3
+    orb('flor', 'flor_luminosa', 750, 360, 0xff9ad0, { lines: ['Zona oculta: una flor luminosa crece donde casi nadie mira. ¡Pequeña recompensa por explorar!'] }), // Recompensa oculta
+    npc('guardabosques', 'Guardabosques', 640, 215, '#4a5a2a', '#8a5a24', '#6a4a2a', { script: 'ranger' })] }, // Guardabosques
+  Ch3_Castle: { quest: 'q3', gates: { e: { req: 'q:q3', hint: 'Antes de ir a la biblioteca, averigua dónde está el Gran Comedor.' }, s: { req: 'q:q4', hint: 'Primero descifra el mensaje de la biblioteca.' }, n: { req: 'q:q5', hint: 'El Gran Comedor abrirá sus puertas cuando prepares tu poción.' } }, interactables: [], things: [ // Capítulo 3
+    npc('prefecta', 'Prefecta', 330, 335, '#5a2a2a', '#c0c0c0', '#3a2a1a', { progress: 'q3', lines: ['Prefecta: ¿Buscas el Gran Comedor? Está al norte, pero sus puertas solo se abren a quien ya demostró su valía.', 'Prefecta: Consulta los retratos: saben más de lo que aparentan.'] }), // Prefecta
+    { kind: 'talk', id: 'retrato1', x: 190, y: 52, w: 26, h: 28, progress: 'q3', lines: ['Retrato del Mago Sabio: Primero la biblioteca, luego las pociones, y al final la gran sala. Así se hace.'] }, // Retrato 1
+    { kind: 'talk', id: 'retrato2', x: 330, y: 52, w: 26, h: 28, progress: 'q3', lines: ['Retrato de la Dama del Lago: El cuadro te sigue con la mirada y susurra: "Busca el Gran Comedor, hacia el norte."'] }, // Retrato 2
+    { kind: 'talk', id: 'retrato3', x: 470, y: 52, w: 26, h: 28, lines: ['Retrato del Caballero Distraído: ¿Has visto mi caballo? Creo que lo dejé en el patio...'] }, // Retrato 3
+    { kind: 'talk', id: 'retrato4', x: 610, y: 52, w: 26, h: 28, lines: ['Retrato del Cocinero: Si buscas la cena, sigue el olor a pastel de calabaza.'] }] }, // Retrato 4
+  Ch4_Library: { quest: 'q4', interactables: [], things: [ // Capítulo 4
+    orb('tomo1', 'libro_1', 320, 170, 0xff8080, { art: 'decor', progress: 'q4', lines: ['Un libro flotante se posa en tus manos: "Tomo antiguo I".'] }), // Libro 1 (flotante)
+    orb('tomo2', 'libro_2', 500, 150, 0xff8080, { art: 'decor', progress: 'q4', lines: ['Otro libro desciende suavemente: "Tomo antiguo II".'] }), // Libro 2
+    orb('tomo3', 'libro_3', 420, 280, 0xff8080, { art: 'decor', progress: 'q4', lines: ['Un tercer libro baja del aire: "Tomo antiguo III".'] }), // Libro 3
+    orb('marca', 'marcapaginas', 590, 350, 0xffd27a, { lines: ['Un marcapáginas encantado brilla entre las mesas.'] }), // Coleccionable
+    orb('tinta', 'tinta_brillante', 110, 300, 0x80c0ff, { lines: ['Un tintero de tinta brillante, olvidado en el suelo.'] }), // Coleccionable
+    orb('grimorio', 'grimorio_olvidado', 582, 130, 0xc07dff, { lines: ['Zona secreta: tras la última estantería hay un grimorio olvidado.'] }), // Zona secreta
+    { kind: 'talk', id: 'atril', script: 'atril', x: 300, y: 200, w: 48, h: 44 }, // Atril del acertijo
+    npc('biblio', 'Bibliotecaria', 180, 345, '#4a3a6a', '#d0b060', '#b0b0b0', { lines: ['Bibliotecaria: Silencio, por favor. Tres tomos antiguos flotan por la sala; reúnelos y llévalos al atril.', 'Bibliotecaria: Y no olvides mirar tras las estanterías...'] })] }, // Bibliotecaria
+  Ch5_Potions: { quest: 'q5', interactables: [], things: [ // Capítulo 5
+    orb('ing1', 'hoja_plata', 120, 112, 0xd0e0ff), orb('ing2', 'raiz_luna', 200, 112, 0xe0d0ff), orb('ing3', 'polvo_estrella', 440, 112, 0xffe080), orb('ing4', 'petalo_fuego', 520, 112, 0xff7a40), orb('ing5', 'escama_lago', 580, 165, 0x60c0ff), orb('ing6', 'baya_sombra', 100, 316, 0x8060c0), // Seis ingredientes
+    { kind: 'talk', id: 'receta', x: 200, y: 268, w: 40, h: 22, lines: ['Libro de recetas: "Poción de Luz Dorada".', '"Primero, la hoja que brilla como la plata. Luego, la raíz que crece bajo la luna. Por último, el polvo que cae del cielo."'] }, // Pista
+    { kind: 'talk', id: 'caldero', script: 'cauldron', x: 320, y: 198, w: 28, h: 24 }, // Caldero (minijuego)
+    npc('profe', 'Profesor de Pociones', 500, 255, '#2a4a3a', '#a0c040', '#4a4a4a', { lines: ['Profesor: Hoy prepararemos una Poción de Luz Dorada. Reúne ingredientes por el aula y sigue la receta.', 'Profesor: Ojo: el orden importa. Una mala mezcla puede volar el caldero.'] })] }, // Profesor
+  Ch6_GreatHall: { quest: 'q6', gates: { e: { req: 'f:sorted', hint: 'Las puertas se abrirán tras la ceremonia de selección. (Llega en la Fase 5)' } } } // Capítulo 6
+}; // Fin EXTRA
+Object.entries(EXTRA).forEach(([k, e]) => { const m = MAPS[k]; m.quest = e.quest; m.things = e.things || []; if (e.interactables) m.interactables = e.interactables; m.portals.forEach(p => { const g = e.gates && e.gates[p.side]; if (g) Object.assign(p, g); }); }); // Fusiona el contenido en cada mapa
+Object.values(MAPS).forEach(m => { m.things = m.things || []; }); // Todo mapa tiene lista de interacciones (aunque vacía)

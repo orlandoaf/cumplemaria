@@ -32,4 +32,30 @@ for (const [k, m] of Object.entries(MAPS)) { // Revisión de decorado y conexion
   m.portals.forEach(p => assert(MAPS[p.to].portals.some(q => q.to === k), k + ' -> ' + p.to + ' tiene regreso')); // Conexiones recíprocas
   m.interactables.forEach(o => assert(!solids.some(r => inRect(o.x + o.w / 2, o.y + o.h / 2, { x: r.x + 8, y: r.y + 8, w: r.w - 16, h: r.h - 16 }) && false), 'interactuable ok')); // Marcador (se valida en ejecución)
 } // Fin revisión
+const { Inventory } = await import('../src/systems/Inventory.js'); const { Quests } = await import('../src/systems/QuestSystem.js'); // Sistemas de la Fase 4
+const { ITEMS } = await import('../src/data/items.js'); const { QUESTS } = await import('../src/data/quests.js'); const { SCRIPTS, REQUIRED } = await import('../src/data/scripts.js'); // Datos
+GameState.reset(); assert(Inventory.add('carta_admision') && !Inventory.add('carta_admision') && Inventory.has('carta_admision'), 'inventario sin duplicados'); // Agregar
+assert(Inventory.remove('carta_admision') && !Inventory.has('carta_admision') && !Inventory.remove('carta_admision'), 'inventario quita una vez'); // Quitar
+assert.throws(() => Inventory.add('no_existe'), /desconocido/, 'objeto desconocido rechazado'); // Validación
+assert(Quests.start('q3') && !Quests.start('q3') && !Quests.progress('q3', 0) && Quests.state('q3').progress === 0, 'misión inicia una vez'); // Inicio
+assert(!Quests.progress('q3') && !Quests.progress('q3') && Quests.progress('q3') && Quests.state('q3').progress === 3, 'progreso hasta la meta'); // Progreso
+assert(Quests.complete('q3').includes('moneda_suerte') && Quests.isDone('q3') && Inventory.has('moneda_suerte') && Quests.complete('q3').length === 0, 'recompensa una sola vez'); // Recompensa
+assert(Quests.check('q:q3') && !Quests.check('q:q9') && !Quests.check('f:x') && (GameState.setFlag('x', 1), Quests.check('f:x')) && Quests.check(undefined), 'requisitos de puerta'); // Requisitos
+GameState.reset(); const used = new Set(); // Cobertura de datos
+for (const [k, m] of Object.entries(MAPS)) { // Revisa el contenido de cada mapa
+  if (m.quest) { assert(QUESTS[m.quest], k + ': misión existente'); used.add(m.quest); } // Misión válida
+  m.portals.forEach(p => { if (p.req) { const [ty, id] = p.req.split(':'); assert(ty === 'f' || QUESTS[id], k + ': requisito válido ' + p.req); assert(p.hint, k + ': puerta con aviso'); } }); // Puertas con aviso
+  const solids = m.decor.filter(([n]) => PROPS[n].s).map(([n, x, y]) => ({ x: x - PROPS[n].w * PROPS[n].s[0] / 2, y: y - PROPS[n].s[1], w: PROPS[n].w * PROPS[n].s[0], h: PROPS[n].s[1] })); // Sólidos
+  (m.things || []).forEach(t => { // Cada interacción
+    assert(t.x > 24 && t.x < m.w - 24 && t.y > 24 && t.y < m.h - 24, k + ': ' + t.id + ' dentro del mapa'); // Dentro
+    if (t.kind === 'item') assert(ITEMS[t.item], k + ': objeto existente ' + t.item); // Objeto válido
+    if (t.script) assert(typeof SCRIPTS[t.script] === 'function', k + ': guion existente ' + t.script); // Guion válido
+    if (t.progress) assert(QUESTS[t.progress], k + ': misión de progreso ' + t.progress); // Misión válida
+    if (t.kind === 'npc') assert(t.look && t.name && (t.script || t.lines), k + ': NPC completo ' + t.id); // NPC completo
+    if (t.kind === 'item' && t.art !== 'decor') assert(!solids.some(r => inRect(t.x, t.y, r)) && !m.walls.some(r => inRect(t.x, t.y, r)), k + ': ' + t.id + ' alcanzable (fuera de obstáculos)'); // Alcanzable
+  }); // Fin interacciones
+} // Fin mapas
+Object.entries(REQUIRED).forEach(([s, ids]) => ids.forEach(i => assert(Object.values(MAPS).some(m => m.things.some(t => t.item === i)), 'objeto requerido por ' + s + ' existe en el mundo: ' + i))); // Se puede conseguir todo lo necesario
+Object.entries(QUESTS).forEach(([id, q]) => { const n = Object.values(MAPS).flatMap(m => m.things).filter(t => t.progress === id).length + Object.values(MAPS).filter(m => m.interactables.length && false).length; if (q.goal > 1 && !['q5'].includes(id)) assert(n >= q.goal, id + ': hay suficientes fuentes de progreso (' + n + '/' + q.goal + ')'); }); // Metas alcanzables
+['q1', 'q2', 'q3', 'q4', 'q5'].forEach(q => assert(used.has(q), q + ' se inicia en algún capítulo')); // Cadena de misiones completa
 console.log('Integración OK: guardado, movimiento, mapas y portales'); // Resultado

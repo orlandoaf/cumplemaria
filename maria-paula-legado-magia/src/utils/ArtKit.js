@@ -68,6 +68,7 @@ export function makeArt(scene) { // Genera todo el arte procedural (una sola vez
   const mk = (key, w, h, fn) => { const c = scene.textures.createCanvas(key, w, h); fn(c.getContext('2d')); c.refresh(); }; // Crea una textura pequeña con una función de dibujo
   mk('sh', 32, 8, g => { const r = g.createRadialGradient(16, 16, 0, 16, 16, 16); r.addColorStop(0, 'rgba(0,0,0,1)'); r.addColorStop(1, 'rgba(0,0,0,0)'); g.scale(1, 0.25); g.fillStyle = r; g.fillRect(0, 0, 32, 32); }); // Sombra de contacto elíptica
   mk('vig', 480, 270, g => { const r = g.createRadialGradient(240, 135, 100, 240, 135, 300); r.addColorStop(0, 'rgba(0,0,0,0)'); r.addColorStop(1, 'rgba(0,0,0,0.55)'); g.fillStyle = r; g.fillRect(0, 0, 480, 270); }); // Viñeta de cámara
+  mk('orb', 10, 10, g => { g.fillStyle = '#fff'; g.fillRect(4, 0, 2, 10); g.fillRect(0, 4, 10, 2); g.fillRect(3, 3, 4, 4); g.fillStyle = 'rgba(255,255,255,0.5)'; g.fillRect(2, 2, 6, 6); }); // Objeto brillante recogible
   mk('d_tuft', 8, 6, g => { g.fillStyle = '#2f6a28'; [[1, 2, 1, 4], [3, 0, 1, 6], [5, 1, 1, 5], [7, 3, 1, 3]].forEach(a => g.fillRect(...a)); g.fillStyle = '#7ab85a'; g.fillRect(3, 0, 1, 2); g.fillRect(5, 1, 1, 1); }); // Mata de pasto
   mk('d_pebble', 6, 4, g => { g.fillStyle = '#6a665e'; g.fillRect(0, 1, 4, 3); g.fillStyle = '#7a756c'; g.fillRect(4, 0, 2, 2); g.fillStyle = '#9a958a'; g.fillRect(1, 1, 2, 1); }); // Piedrecitas
   mk('d_crack', 12, 8, g => { g.fillStyle = '#3a352f'; [[0, 3, 3, 1], [3, 4, 3, 1], [6, 3, 2, 1], [8, 2, 2, 1], [10, 1, 2, 1], [5, 5, 1, 2]].forEach(a => g.fillRect(...a)); }); // Grieta
@@ -89,3 +90,12 @@ export function makeArt(scene) { // Genera todo el arte procedural (una sola vez
   g.fillStyle = '#ffd27a'; [[586, 52], [602, 58], [550, 40], [634, 36], [582, 22]].forEach(([x, y]) => g.fillRect(x, y, 3, 5)); // Ventanas encendidas
   f.refresh(); // Sube el fondo
 } // Fin makeArt
+export function makeNpc(scene, key, look) { // Crea un personaje secundario recoloreando el sprite de María Paula
+  if (scene.textures.exists(key)) return; // Una sola vez
+  const c = scene.textures.createCanvas(key, 16, 24), g = c.getContext(), src = scene.textures.get('player').getSourceImage(); // Lienzo y hoja original
+  g.drawImage(src, 0, 0, 16, 24, 0, 0, 16, 24); const im = g.getImageData(0, 0, 16, 24), d = im.data; // Copia el cuadro frontal
+  const hex = h => [h >> 16 & 255, h >> 8 & 255, h & 255], to = s => parseInt(s.slice(1), 16); // Conversión de colores
+  const swap = [[to('#2d2540'), to(look.robe)], [to('#40355a'), to(sh(look.robe, 24))], [to('#b0222c'), to(look.scarf)], [to('#5a3820'), to(look.hair)], [to('#7a5030'), to(sh(look.hair, 26))]]; // Colores a reemplazar
+  for (let i = 0; i < d.length; i += 4) { const p = d[i] << 16 | d[i + 1] << 8 | d[i + 2], m = d[i + 3] === 255 && swap.find(s => s[0] === p); if (m) { const [r, gg, b] = hex(m[1]); d[i] = r; d[i + 1] = gg; d[i + 2] = b; } } // Sustituye píxel a píxel
+  g.putImageData(im, 0, 0); c.refresh(); // Guarda la textura
+} // Fin makeNpc
