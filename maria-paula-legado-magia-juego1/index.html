@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>María Paula: El Legado de la Magia</title>
+<meta property="og:title" content="María Paula: El Legado de la Magia">
+<meta property="og:image" content="assets/poster.png">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ============ CAPAS DE INTERFAZ ============ -->
+<div id="fade"></div>
+
+<div id="menu" class="hidden">
+  <h1>MARÍA PAULA</h1>
+  <h2>EL LEGADO DE LA MAGIA</h2>
+  <button class="mbtn" id="btnNew">Nueva partida</button>
+  <button class="mbtn" id="btnContinue">Continuar</button>
+  <button class="mbtn" id="btnControls">Controles</button>
+  <button class="mbtn" id="btnCredits">Créditos</button>
+  <div class="foot">Una aventura creada especialmente para María Paula</div>
+</div>
+
+<div id="hud" class="hidden">
+  <div id="mission" class="hidden"></div>
+  <div id="location" class="hidden"></div>
+  <div id="prompt" class="hidden"></div>
+  <div id="keysbar">WASD / Flechas mover · Shift correr · E interactuar · I inventario · J misiones · M mapa · ESC menú</div>
+</div>
+
+<div id="ribbon" class="hidden"><b>¡FELIZ CUMPLEAÑOS, MARÍA PAULA!</b><span>BIENVENIDA A GRYFFINDOR</span></div>
+
+<div id="dialogue" class="hidden">
+  <div id="dlgName"></div>
+  <div id="dlgText"></div>
+  <div id="dlgHint">E / ESPACIO para continuar</div>
+</div>
+
+<div id="modal" class="hidden">
+  <div id="modalBox">
+    <div id="modalTitle"></div>
+    <div id="modalText"></div>
+    <div id="modalBtns"></div>
+  </div>
+</div>
+
+<div id="letter" class="hidden">
+  <div id="letterPaper">
+    <div class="seal">MP</div>
+    <h3 id="letterTitle"></h3>
+    <div id="letterBody"></div>
+    <button class="mbtn" id="letterClose">Guardar la carta</button>
+  </div>
+</div>
+
+<div id="banner" class="hidden">
+  <div class="flags" id="bannerFlags"></div>
+  <div class="big" id="bannerBig"></div>
+  <div class="small" id="bannerSmall"></div>
+</div>
+
+<div id="countdown" class="hidden"></div>
+<div id="flash"></div>
+<div id="toast"></div>
+
+<div id="questScreen" class="screen hidden"><div class="panel"><h3>Registro de Misiones</h3><ul id="questList"></ul><button class="mbtn" data-close>Cerrar (J)</button></div></div>
+<div id="invScreen" class="screen hidden"><div class="panel"><h3>Inventario</h3><div id="invGrid" class="grid"></div><button class="mbtn" data-close>Cerrar (I)</button></div></div>
+<div id="mapScreen" class="screen hidden"><div class="panel"><h3>Mapa de la Aventura</h3><ul id="mapList"></ul><button class="mbtn" data-close>Cerrar (M)</button></div></div>
+<div id="pauseScreen" class="screen hidden"><div class="panel"><h3>Menú de Pausa</h3>
+  <button class="mbtn" id="btnResume">Continuar</button>
+  <button class="mbtn" id="btnMute">Sonido: Activado</button>
+  <button class="mbtn" id="btnHow">Controles</button>
+  <button class="mbtn" id="btnSaveQuit">Guardar y salir al menú</button>
+</div></div>
+<div id="infoScreen" class="screen hidden"><div class="panel"><h3 id="infoTitle"></h3><div id="infoBody" style="font-size:14px;line-height:1.7"></div><button class="mbtn" data-close>Cerrar</button></div></div>
+
+<div id="touchui" class="hidden">
+  <div id="joy"><div id="joyknob"></div></div>
+  <button class="tbtn" id="btnE">E</button>
+  <button class="tbtn" id="btnRun">Correr</button>
+  <button class="tbtn small" id="btnI">Inv</button>
+  <button class="tbtn small" id="btnJ">Mis</button>
+  <button class="tbtn small" id="btnM">Mapa</button>
+</div>
+
+<!-- Motor 3D -->
+<script src="https://unpkg.com/three@0.150.1/build/three.min.js"></script>
+
+<!-- Datos narrativos (editables) -->
+<script src="data/config.js"></script>
+<!-- Núcleo: renderer, helpers, FX, Área -->
+<script src="src/core/engine.js"></script>
+<!-- Sistemas: interfaz, audio, entrada, guardado -->
+<script src="src/systems/ui.js"></script>
+<!-- Personajes: fábrica chibi, María Paula, NPC, colisiones -->
+<script src="src/characters/character.js"></script>
+<!-- Estado: misiones, inventario, mapa -->
+<script src="src/systems/game.js"></script>
+<!-- Director: gestor de capítulos -->
+<script src="src/core/director.js"></script>
+<!-- Escenarios -->
+<script src="src/scenes/station.js"></script>
+<script src="src/scenes/path.js"></script>
+<script src="src/scenes/castle.js"></script>
+<script src="src/scenes/library.js"></script>
+<script src="src/scenes/potions.js"></script>
+<script src="src/scenes/greathall.js"></script>
+<script src="src/scenes/commonroom.js"></script>
+<!-- Enriquecimiento: props, personajes extra y secretos -->
+<script src="src/scenes/enrichment.js"></script>
+<!-- Arranque y bucle principal -->
+<script src="src/main.js"></script>
+</body>
+</html>

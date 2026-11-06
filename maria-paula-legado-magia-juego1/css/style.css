@@ -1,0 +1,101 @@
+
+/* ============================================================
+   MARÍA PAULA: EL LEGADO DE LA MAGIA — Hoja de estilos
+   Paleta: piedra cálida, dorado envejecido, rojo Gryffindor
+   ============================================================ */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#0a0705;font-family:Georgia,'Times New Roman',serif;color:#e8d9b0;user-select:none;-webkit-user-select:none;touch-action:none}
+.hidden{display:none!important}
+canvas{display:block}
+button{font-family:inherit}
+
+/* ---------- Transición cinematográfica entre escenas ---------- */
+#fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .9s ease;z-index:60}
+#fade.on{opacity:1;pointer-events:all}
+#fade.soft{opacity:.55}
+
+/* ---------- Menú principal ---------- */
+#menu{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 35%,#33200f 0%,#120a05 70%);text-align:center;padding:20px}
+#menu h1{font-size:clamp(26px,5.5vw,58px);color:#e7c25a;letter-spacing:3px;text-shadow:0 0 30px rgba(212,175,55,.55),0 4px 0 #2a1a05;margin-bottom:4px}
+#menu h2{font-size:clamp(14px,2.4vw,22px);color:#b08d57;letter-spacing:6px;margin-bottom:38px;font-style:italic}
+.mbtn{display:block;width:min(320px,80vw);margin:9px auto;padding:13px 20px;font-size:18px;letter-spacing:2px;color:#e8d9b0;background:linear-gradient(#3a2410,#241505);border:2px solid #8a6a2f;border-radius:8px;cursor:pointer;transition:.2s;box-shadow:0 4px 12px rgba(0,0,0,.6)}
+.mbtn:hover{background:linear-gradient(#553516,#33200f);border-color:#d4af37;color:#ffe9ad;transform:translateY(-2px)}
+.mbtn:disabled{opacity:.35;cursor:default;transform:none}
+#menu .foot{position:absolute;bottom:14px;font-size:12px;color:#7a6242}
+
+/* ---------- HUD durante el juego ---------- */
+#hud{position:fixed;inset:0;pointer-events:none;z-index:20}
+#mission{position:absolute;top:14px;left:14px;max-width:min(430px,72vw);background:rgba(16,10,4,.78);border:1px solid #8a6a2f;border-radius:8px;padding:9px 14px;font-size:14px;line-height:1.45;box-shadow:0 4px 14px rgba(0,0,0,.5)}
+#mission b{color:#e7c25a;letter-spacing:1px}
+#location{position:absolute;top:14px;right:14px;background:rgba(16,10,4,.78);border:1px solid #8a6a2f;border-radius:8px;padding:9px 14px;font-size:14px;letter-spacing:2px;color:#e7c25a}
+#prompt{position:absolute;bottom:118px;left:50%;transform:translateX(-50%);background:rgba(16,10,4,.85);border:1px solid #d4af37;border-radius:20px;padding:7px 18px;font-size:15px;color:#ffe9ad;white-space:nowrap}
+#keysbar{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:11px;color:#8d744d;background:rgba(16,10,4,.55);padding:4px 12px;border-radius:12px;white-space:nowrap}
+#toast{position:fixed;top:64px;left:50%;transform:translateX(-50%);z-index:38;background:rgba(20,12,4,.92);border:1px solid #d4af37;color:#ffe9ad;padding:9px 20px;border-radius:22px;font-size:14px;opacity:0;transition:opacity .4s;pointer-events:none}
+
+/* ---------- Controles táctiles ---------- */
+#touchui{position:fixed;inset:0;z-index:25;pointer-events:none}
+#joy{position:absolute;left:26px;bottom:70px;width:120px;height:120px;border:2px solid rgba(212,175,55,.5);border-radius:50%;background:rgba(20,12,5,.35);pointer-events:all}
+#joyknob{position:absolute;left:38px;top:38px;width:44px;height:44px;border-radius:50%;background:rgba(212,175,55,.55)}
+.tbtn{position:absolute;width:64px;height:64px;border-radius:50%;border:2px solid rgba(212,175,55,.6);background:rgba(30,18,7,.6);color:#ffe9ad;font-size:16px;pointer-events:all}
+#btnE{right:30px;bottom:96px}
+#btnRun{right:112px;bottom:56px;font-size:12px}
+.tbtn.small{position:absolute;width:46px;height:46px;font-size:11px;border-radius:50%}
+#btnI{right:24px;top:70px}#btnJ{right:24px;top:124px}#btnM{right:24px;top:178px}
+
+/* ---------- Caja de diálogo ---------- */
+#dialogue{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);width:min(860px,94vw);background:linear-gradient(#1c1207,#120b04);border:2px solid #8a6a2f;border-radius:12px;padding:14px 18px;z-index:30;box-shadow:0 10px 30px rgba(0,0,0,.7)}
+#dlgName{color:#e7c25a;font-size:15px;letter-spacing:2px;margin-bottom:5px}
+#dlgText{font-size:16px;line-height:1.55;min-height:44px;color:#f0e6cd}
+#dlgHint{text-align:right;font-size:11px;color:#8d744d;margin-top:4px}
+
+/* ---------- Ventana modal (acertijos, regalos, pociones) ---------- */
+#modal{position:fixed;inset:0;z-index:45;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.62);padding:16px}
+#modalBox{width:min(620px,94vw);background:linear-gradient(#241708,#150d05);border:2px solid #a8843c;border-radius:14px;padding:22px;box-shadow:0 16px 50px rgba(0,0,0,.8);text-align:center}
+#modalTitle{color:#e7c25a;font-size:20px;letter-spacing:2px;margin-bottom:10px}
+#modalText{font-size:15px;line-height:1.6;margin-bottom:16px;color:#efe3c4;white-space:pre-line}
+#modalBtns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.mopt{padding:10px 16px;font-size:15px;background:#31200d;border:1px solid #8a6a2f;color:#e8d9b0;border-radius:8px;cursor:pointer;min-width:120px}
+.mopt:hover{border-color:#d4af37;color:#ffe9ad;background:#43301a}
+#modalField{width:min(320px,80%);padding:10px;font-family:inherit;font-size:16px;text-align:center;background:#0f0903;border:1px solid #8a6a2f;color:#ffe9ad;border-radius:8px;margin-bottom:14px}
+
+/* ---------- Carta de pergamino ---------- */
+#letter{position:fixed;inset:0;z-index:46;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);padding:18px}
+#letterPaper{width:min(680px,94vw);max-height:88vh;overflow-y:auto;background:linear-gradient(160deg,#e9d9ae,#d9c28c 60%,#c8ac72);color:#3a2408;border:3px solid #8a6a2f;border-radius:6px;padding:38px 38px 26px;box-shadow:0 20px 60px rgba(0,0,0,.85),inset 0 0 60px rgba(120,80,20,.35);position:relative}
+#letterPaper h3{text-align:center;letter-spacing:3px;font-size:20px;margin-bottom:14px;color:#5a3a10}
+#letterPaper p{font-size:15px;line-height:1.7;margin-bottom:10px;font-style:italic}
+#letterPaper .seal{position:absolute;top:14px;right:16px;width:52px;height:52px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#c0392b,#7b1d12);box-shadow:0 3px 8px rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;color:#ffd9a0;font-size:22px}
+#letterClose{display:block;margin:16px auto 0}
+
+/* ---------- Cartel de eventos (sorpresa / Gryffindor) ---------- */
+#banner{position:fixed;top:16%;left:50%;transform:translate(-50%,-40px) scale(.6);z-index:35;text-align:center;opacity:0;transition:all .6s cubic-bezier(.2,1.6,.4,1);pointer-events:none}
+#banner.show{opacity:1;transform:translate(-50%,0) scale(1)}
+#banner .big{font-size:clamp(26px,5vw,52px);color:#ffe9ad;letter-spacing:4px;text-shadow:0 0 30px #d4af37,0 4px 0 #5a3a10}
+#banner .small{font-size:clamp(15px,2.4vw,24px);color:#e7c25a;letter-spacing:6px;margin-top:8px}
+#banner .flags{margin-bottom:10px;font-size:clamp(20px,3.6vw,36px);letter-spacing:12px;color:#e7c25a;text-shadow:0 0 18px #d4af37}
+
+/* ---------- Cinta permanente de cumpleaños ---------- */
+#ribbon{position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:22;pointer-events:none;background:linear-gradient(#7b1d12,#5a130c);border:2px solid #d4af37;border-radius:10px;padding:8px 26px;text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.6)}
+#ribbon b{display:block;color:#ffe9ad;font-size:clamp(14px,2.6vw,22px);letter-spacing:3px}
+#ribbon span{color:#e7c25a;font-size:clamp(11px,1.8vw,14px);letter-spacing:2px}
+
+/* ---------- Pantallas de sistema (inventario/misiones/mapa/pausa) ---------- */
+.screen{position:fixed;inset:0;z-index:42;display:flex;align-items:center;justify-content:center;background:rgba(5,3,1,.72);padding:16px}
+.panel{width:min(640px,94vw);max-height:86vh;overflow-y:auto;background:linear-gradient(#221507,#130c05);border:2px solid #a8843c;border-radius:14px;padding:24px;box-shadow:0 16px 50px rgba(0,0,0,.8)}
+.panel h3{color:#e7c25a;letter-spacing:3px;text-align:center;margin-bottom:16px;font-size:20px}
+.panel ul{list-style:none}
+.panel li{padding:8px 10px;border-bottom:1px solid #3a2a12;font-size:14px;line-height:1.5}
+.panel li b{color:#ffd97a}
+.panel li.done{color:#8d9a6b;text-decoration:line-through}
+.panel .empty{color:#8d744d;font-style:italic;text-align:center;padding:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.card{background:#2a1c0c;border:1px solid #6b5426;border-radius:8px;padding:10px;font-size:13px;text-align:center}
+.card .ico{font-size:26px;display:block;margin-bottom:4px}
+.card b{color:#ffd97a;display:block;margin-bottom:3px}
+
+/* ---------- Foto grupal: cuenta regresiva y flash ---------- */
+#countdown{position:fixed;inset:0;z-index:48;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.3);pointer-events:none;font-size:120px;color:#fff;text-shadow:0 0 40px #d4af37;font-weight:bold}
+#flash{position:fixed;inset:0;background:#fff;opacity:0;z-index:49;pointer-events:none;transition:opacity .5s}
+
+
+/* Fondo del menú con el póster oficial */
+#menu{background-image:linear-gradient(rgba(12,7,3,.72),rgba(12,7,3,.9)),url('../assets/poster.png');background-size:cover;background-position:center}
