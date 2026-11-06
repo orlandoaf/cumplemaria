@@ -1,0 +1,8 @@
+export const QUESTS = { // Registro de misiones: nombre, descripción, objetivo, recompensa y progreso (goal)
+  q1: { name: 'El guía del andén', desc: 'Alguien debe acompañarte hasta el castillo.', objective: 'Revisa tu equipaje y habla con el guía.', goal: 1, reward: { text: 'Camino abierto hacia el bosque', items: [] } }, // Capítulo 1
+  q2: { name: 'Tres objetos extraviados', desc: 'Objetos mágicos se perdieron en el sendero.', objective: 'Recupera 3 objetos mágicos y resuelve el acertijo del guardabosques.', goal: 3, reward: { text: 'Paso libre hacia el castillo', items: [] } }, // Capítulo 2
+  q3: { name: 'Encuentra el Gran Comedor', desc: 'El castillo es enorme y nadie te ha dicho dónde cenar.', objective: 'Habla con la prefecta y consulta los retratos.', goal: 3, auto: true, reward: { text: 'Moneda de la suerte', items: ['moneda_suerte'] } }, // Capítulo 3
+  q4: { name: 'El mensaje de la biblioteca', desc: 'Un mensaje mágico espera ser descifrado.', objective: 'Encuentra los 3 tomos antiguos y descifra el mensaje en el atril.', goal: 3, reward: { text: 'Mensaje descifrado', items: ['pergamino_descifrado'] } }, // Capítulo 4
+  q5: { name: 'La poción especial', desc: 'El profesor te pide una poción de Luz Dorada.', objective: 'Reúne ingredientes y prepara la poción en el caldero.', goal: 1, reward: { text: 'Las puertas del Gran Comedor se abren', items: [] } }, // Capítulo 5
+  q6: { name: 'La Selección', desc: 'Es la hora de la ceremonia.', objective: 'Acércate al Sombrero Seleccionador.', goal: 1, reward: { text: 'Tu casa en Hogwarts', items: [] } } // Capítulo 6 (se completa en la Fase 5)
+}; // Fin QUESTS

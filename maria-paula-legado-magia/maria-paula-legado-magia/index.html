@@ -1,0 +1,15 @@
+<!DOCTYPE html> <!-- Declara documento HTML5 -->
+<html lang="es"> <!-- Raíz del documento, idioma español -->
+<head> <!-- Metadatos y recursos -->
+  <meta charset="UTF-8"> <!-- Codificación que permite tildes y ñ -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> <!-- Ajuste móvil sin zoom accidental -->
+  <title>María Paula: El Legado de la Magia</title> <!-- Título de la pestaña -->
+  <link rel="stylesheet" href="style.css"> <!-- Estilos de la página contenedora -->
+</head>
+<body> <!-- Contenido visible -->
+  <div id="game-container"></div> <!-- Phaser inserta aquí su canvas (ver Config.PARENT_ID) -->
+  <noscript>Este juego necesita JavaScript activado.</noscript> <!-- Aviso si JS está desactivado -->
+  <script src="vendor/phaser.min.js"></script> <!-- Phaser 3.80.1 local: expone el global Phaser -->
+  <script type="module" src="main.js"></script> <!-- Punto de entrada modular del juego -->
+</body>
+</html>
