@@ -1,0 +1,4 @@
+{ "name": "maria-paula-legado-magia", "version": "0.2.1", "private": true,
+  "description": "RPG 2D Phaser 3.80.1 (local en vendor/). Requiere Node >= 22.7 solo para las pruebas.",
+  "scripts": { "test": "node tests/check.mjs && node tests/integration.mjs && node tests/runtime.mjs", "start": "python3 -m http.server 8000" },
+  "devDependencies": { "jsdom": "*", "canvas": "*" } }
